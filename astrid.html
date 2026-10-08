@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Final de Bioquímica - 60 Preguntas</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7fc; margin: 0; padding: 20px; color: #1e2a3a; }
+    .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #0b3b5c; margin-bottom: 10px; }
+    .subtitle { text-align: center; color: #4a6a8a; margin-bottom: 30px; }
+    .section-title { margin-top: 40px; margin-bottom: 20px; padding: 15px; background: #0b3b5c; color: white; border-radius: 8px; text-align: center; font-size: 1.3rem; font-weight: bold; }
+    .question { background: #f9fbfe; border-left: 5px solid #2a7faa; padding: 15px 20px; margin-bottom: 20px; border-radius: 8px; transition: 0.2s; }
+    .question.march { border-left: 5px solid #e67e22; background: #fef9f4; }
+    .question p { margin: 0 0 10px 0; font-size: 1.05rem; }
+    .option { display: block; margin: 8px 0; padding: 8px 12px; background: white; border-radius: 6px; border: 1px solid #d0dce8; cursor: pointer; transition: 0.2s; }
+    .option:hover { background: #e8f0fa; }
+    .option input { margin-right: 10px; transform: scale(1.1); }
+    .feedback { margin-top: 10px; font-weight: 600; padding: 6px 10px; border-radius: 6px; }
+    .correct { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+    .incorrect { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+    button { display: block; width: 100%; padding: 16px; font-size: 1.2rem; font-weight: bold; background: #0b3b5c; color: white; border: none; border-radius: 10px; cursor: pointer; margin-top: 30px; transition: 0.2s; }
+    button:hover { background: #145a8a; }
+    #result { margin-top: 30px; text-align: center; font-size: 1.4rem; font-weight: bold; color: #0b3b5c; padding: 20px; background: #e8f0fa; border-radius: 12px; }
+    .march-badge { font-size: 0.8rem; background: #e67e22; color: white; padding: 2px 8px; border-radius: 10px; margin-left: 10px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🧪 Quiz Final de Bioquímica</h1>
+  <p class="subtitle">60 preguntas | Teoría + Marcha Analítica Práctica</p>
+  <form id="quizForm"></form>
+  <button onclick="calificar()">Calificar quiz</button>
+  <div id="result"></div>
+</div>
+
+<script>
+  const questions = [
+    // ===== PARTE 1: TEORÍA GENERAL (Preguntas 1 a 40) =====
+    { q: "¿Qué son los precursores?", options: ["Moléculas simples que se unen para formar macromoléculas", "Enzimas que degradan macromoléculas", "Vitaminas necesarias para el metabolismo", "Ácidos nucleicos de alto peso molecular"], correct: 0 },
+    { q: "¿Cuál es un precursor de las proteínas?", options: ["Monosacáridos", "Aminoácidos", "Nucleótidos", "Ácidos grasos"], correct: 1 },
+    { q: "¿Qué macromolécula forman los monosacáridos?", options: ["Proteínas", "Ácidos nucleicos", "Polisacáridos", "Lípidos simples"], correct: 2 },
+    { q: "¿Cuál es el enlace característico de los monosacáridos al unirse?", options: ["Peptídico", "Fosfodiéster", "Glucosídico", "Éster"], correct: 2 },
+    { q: "¿Cómo se clasifican los monosacáridos según número de carbonos?", options: ["Aldosas y cetosas", "Triosas, tetrosas, pentosas, hexosas, heptosas", "Ácidos y básicos", "Simples y complejos"], correct: 1 },
+    { q: "¿En qué carbono está el grupo funcional de una aldosa?", options: ["C1", "C2", "C3", "C4"], correct: 0 },
+    { q: "¿Cuál es el principal ejemplo de aldohexosa?", options: ["Fructosa", "Glucosa", "Ribosa", "Desoxirribosa"], correct: 1 },
+    { q: "¿Cuál es el principal ejemplo de cetohexosa?", options: ["Glucosa", "Fructosa", "Desoxirribosa", "Manosa"], correct: 1 },
+    { q: "¿Qué son los aminoácidos?", options: ["Monómeros de proteínas", "Monómeros de polisacáridos", "Monómeros de ácidos nucleicos", "Lípidos simples"], correct: 0 },
+    { q: "¿Qué enlace forma a los aminoácidos en proteínas?", options: ["Glucosídico", "Peptídico", "Fosfodiéster", "N-glicosídico"], correct: 1 },
+    { q: "¿Qué elementos tiene la estructura de un aminoácido?", options: ["C, H, O, N", "C, H, O, P", "C, H, N, P", "C, H, O, S, P"], correct: 0 },
+    { q: "¿Cómo se clasifican los aminoácidos según su carga?", options: ["Ácidos, básicos y neutros", "Apolares y polares", "Esenciales y no esenciales", "Fibrosos y globulares"], correct: 0 },
+    { q: "¿Cuál es un aminoácido básico?", options: ["Aspartato", "Glutamato", "Lisina", "Cisteína"], correct: 2 },
+    { q: "¿Cuál es un aminoácido aromático?", options: ["Alanina", "Glicina", "Tirosina", "Valina"], correct: 2 },
+    { q: "¿Qué son los aminoácidos esenciales?", options: ["Los que el cuerpo sintetiza", "Los que deben venir de la dieta", "Los que solo tienen carga positiva", "Los que forman enlaces peptídicos"], correct: 1 },
+    { q: "¿Qué son los nucleótidos?", options: ["Monómeros de ácidos nucleicos", "Monómeros de proteínas", "Monómeros de polisacáridos", "Lípidos de membrana"], correct: 0 },
+    { q: "¿Cuál es el enlace entre nucleótidos?", options: ["Peptídico", "Fosfodiéster", "Glucosídico", "Éster"], correct: 1 },
+    { q: "¿Qué elementos tiene un nucleótido?", options: ["C, H, O, N, P", "C, H, O, N", "C, H, O, S", "C, H, N, P, S"], correct: 0 },
+    { q: "¿Qué es un nucleósido?", options: ["Base + azúcar + fosfato", "Base + azúcar", "Azúcar + fosfato", "Base + fosfato"], correct: 1 },
+    { q: "¿Qué diferencia a un nucleótido de un nucleósido?", options: ["El nucleótido tiene fosfato", "El nucleósido tiene fosfato", "El nucleótido no tiene azúcar", "El nucleósido tiene doble cadena"], correct: 0 },
+    { q: "¿Qué son las macromoléculas?", options: ["Moléculas de alto peso molecular formadas por monómeros", "Moléculas pequeñas que se difunden fácilmente", "Iones inorgánicos", "Vitaminas hidrosolubles"], correct: 0 },
+    { q: "¿Cuál es una característica de las macromoléculas?", options: ["Se forman por polimerización", "Son siempre insolubles", "No se pueden hidrolizar", "Tienen bajo peso molecular"], correct: 0 },
+    { q: "¿Qué son los polisacáridos?", options: ["Carbohidratos complejos formados por muchos monosacáridos", "Proteínas de alto peso molecular", "Lípidos simples", "Ácidos nucleicos de doble cadena"], correct: 0 },
+    { q: "¿Cuál es el precursor de los polisacáridos?", options: ["Aminoácidos", "Nucleótidos", "Monosacáridos", "Ácidos grasos"], correct: 2 },
+    { q: "¿Cuál es el principal polisacárido de la dieta de origen vegetal?", options: ["Glucógeno", "Almidón", "Celulosa", "Quitina"], correct: 1 },
+    { q: "¿Cuál es el principal polisacárido de origen animal y almacén de glucosa?", options: ["Almidón", "Celulosa", "Glucógeno", "Sacarosa"], correct: 2 },
+    { q: "¿Qué polisacárido no podemos digerir pero forma parte de la pared celular de las plantas?", options: ["Almidón", "Glucógeno", "Celulosa", "Dextrina"], correct: 2 },
+    { q: "¿Qué son las proteínas?", options: ["Macromoléculas formadas por aminoácidos", "Macromoléculas formadas por nucleótidos", "Carbohidratos complejos", "Lípidos anfipáticos"], correct: 0 },
+    { q: "¿Cómo se clasifican las proteínas según su composición?", options: ["Simples y conjugadas", "Fibrosas y globulares", "Primarias y secundarias", "Ácidas y básicas"], correct: 0 },
+    { q: "¿Cómo se clasifican las proteínas según su forma?", options: ["Simples y conjugadas", "Fibrosas y globulares", "Esenciales y no esenciales", "Aldosas y cetosas"], correct: 1 },
+    { q: "¿Cuál es el nivel de organización primaria de una proteína?", options: ["Secuencia de aminoácidos", "α-hélice", "Plegamiento tridimensional", "Unión de varias cadenas"], correct: 0 },
+    { q: "¿Qué nivel de organización corresponde a la α-hélice?", options: ["Primaria", "Secundaria", "Terciaria", "Cuaternaria"], correct: 1 },
+    { q: "¿Qué nivel de organización implica la unión de varias cadenas polipeptídicas?", options: ["Primaria", "Secundaria", "Terciaria", "Cuaternaria"], correct: 3 },
+    { q: "¿Cuál es una función de las proteínas?", options: ["Catálisis enzimática", "Almacenar información genética", "Formar la pared celular vegetal", "Ser moneda energética principal"], correct: 0 },
+    { q: "¿Qué precursores forman los ácidos nucleicos?", options: ["Aminoácidos", "Nucleótidos", "Monosacáridos", "Ácidos grasos"], correct: 1 },
+    { q: "¿Cuáles son los ácidos nucleicos?", options: ["ADN y ARN", "ADN y proteínas", "ARN y polisacáridos", "ADN y lípidos"], correct: 0 },
+    { q: "¿Qué azúcar se usa para formar ADN?", options: ["Ribosa", "Desoxirribosa", "Glucosa", "Fructosa"], correct: 1 },
+    { q: "¿Cuál es una diferencia estructural entre ADN y ARN?", options: ["El ARN usa uracilo en lugar de timina", "El ADN usa uracilo en lugar de timina", "El ARN es doble hélice siempre", "El ADN es monocatenario siempre"], correct: 0 },
+    { q: "¿Cuáles son las bases púricas?", options: ["Adenina y guanina", "Citosina y timina", "Timina y uracilo", "Adenina y timina"], correct: 0 },
+    { q: "¿Qué bases forman el ARN?", options: ["A, T, G, C", "A, U, G, C", "A, T, G, U", "A, C, T, U"], correct: 1 },
+
+    // ===== PARTE 2: MARCHA ANALÍTICA (Preguntas 41 a 60) =====
+    { q: "En la marcha analítica, ¿qué identifica la Reacción de Benedict?", options: ["Azúcares reductores", "Aminoácidos", "Pentosas", "Cetosas"], correct: 0, march: true },
+    { q: "Si una muestra da POSITIVO en Benedict, ¿qué tipo de molécula contiene?", options: ["Un azúcar reductor", "Un aminoácido", "Un lípido", "Un ácido nucleico"], correct: 0, march: true },
+    { q: "¿Qué identifica la Reacción de Bial?", options: ["Pentosas", "Cetosas", "Aldosas", "Proteínas"], correct: 0, march: true },
+    { q: "Si una muestra da POSITIVO en Bial, ¿qué azúcar específico tienes?", options: ["Glucosa", "Fructosa", "Ribosa", "Sacarosa"], correct: 2, march: true },
+    { q: "¿Qué identifica la Reacción de Seliwanoff?", options: ["Pentosas", "Cetosas", "Aldosas", "Aminoácidos"], correct: 1, march: true },
+    { q: "Si una muestra da POSITIVO en Seliwanoff, ¿qué azúcar específico tienes?", options: ["Glucosa", "Fructosa", "Ribosa", "Galactosa"], correct: 1, march: true },
+    { q: "En la ruta de carbohidratos, si Benedict da POSITIVO, Bial da NEGATIVO y Seliwanoff da NEGATIVO, ¿qué azúcar tienes?", options: ["Ribosa", "Fructosa", "Glucosa", "No se puede saber"], correct: 2, march: true },
+    { q: "¿Qué identifica la Reacción de Ninhidrina?", options: ["Azúcares reductores", "Aminoácidos en general", "Proteínas conjugadas", "Lípidos"], correct: 1, march: true },
+    { q: "Si una muestra da POSITIVO en Ninhidrina, ¿qué contiene?", options: ["Un azúcar", "Un aminoácido", "Un ácido nucleico", "Un lípido"], correct: 1, march: true },
+    { q: "¿Qué identifica la Reacción de Tiogrupos?", options: ["Aminoácidos con grupo -SH (Cisteína)", "Triptófano", "Tirosina", "Glicina"], correct: 0, march: true },
+    { q: "Si una muestra da POSITIVO en Tiogrupos, ¿qué aminoácido específico tienes?", options: ["Triptófano", "Tirosina", "Cisteína", "Glicina"], correct: 2, march: true },
+    { q: "¿Qué identifica la Reacción de Adam Kiewics?", options: ["Cisteína", "Triptófano", "Tirosina", "Glicina"], correct: 1, march: true },
+    { q: "Si una muestra da POSITIVO en Adam Kiewics, ¿qué aminoácido específico tienes?", options: ["Cisteína", "Triptófano", "Tirosina", "Glicina"], correct: 1, march: true },
+    { q: "¿Qué identifica la Reacción Xantoproteica?", options: ["Cisteína", "Triptófano", "Tirosina", "Glicina"], correct: 2, march: true },
+    { q: "Si una muestra da POSITIVO en Xantoproteica, ¿qué aminoácido específico tienes?", options: ["Cisteína", "Triptófano", "Tirosina", "Glicina"], correct: 2, march: true },
+    { q: "Si una muestra da POSITIVO en Ninhidrina, pero NEGATIVO en Tiogrupos, Adam Kiewics y Xantoproteica, ¿qué aminoácido tienes?", options: ["Cisteína", "Triptófano", "Tirosina", "Glicina"], correct: 3, march: true },
+    { q: "En la marcha analítica de aminoácidos, si la Ninhidrina da POSITIVO, ¿cuál es la siguiente prueba que debes hacer?", options: ["Benedict", "Bial", "Tiogrupos", "Seliwanoff"], correct: 2, march: true },
+    { q: "Si una muestra da POSITIVO en Benedict y POSITIVO en Bial, ¿qué sustancia es?", options: ["Glucosa", "Fructosa", "Ribosa", "Cisteína"], correct: 2, march: true },
+    { q: "Si una muestra da POSITIVO en Benedict y POSITIVO en Seliwanoff, ¿qué sustancia es?", options: ["Glucosa", "Fructosa", "Ribosa", "Triptófano"], correct: 1, march: true },
+    { q: "Si una muestra da POSITIVO en Ninhidrina y POSITIVO en Adam Kiewics, ¿qué sustancia es?", options: ["Cisteína", "Triptófano", "Tirosina", "Glucosa"], correct: 1, march: true }
+  ];
+
+  const form = document.getElementById('quizForm');
+  let currentSection = 0;
+
+  questions.forEach((item, index) => {
+    // Insertar título de sección antes de la pregunta 1 y antes de la 41
+    if (index === 0) {
+      const secTitle = document.createElement('div');
+      secTitle.className = 'section-title';
+      secTitle.textContent = '📚 PARTE 1: TEORÍA GENERAL';
+      form.appendChild(secTitle);
+    }
+    if (item.march && currentSection === 0) {
+      currentSection = 1;
+      const secTitle = document.createElement('div');
+      secTitle.className = 'section-title';
+      secTitle.textContent = '🔬 PARTE 2: MARCHA ANALÍTICA (Casos Prácticos)';
+      secTitle.style.background = '#e67e22';
+      form.appendChild(secTitle);
+    }
+
+    const div = document.createElement('div');
+    div.className = item.march ? 'question march' : 'question';
+    
+    let badge = item.march ? '<span class="march-badge">Laboratorio</span>' : '';
+    div.innerHTML = `<p><strong>${index + 1}. ${item.q}</strong> ${badge}</p>`;
+    
+    item.options.forEach((opt, i) => {
+      const label = document.createElement('label');
+      label.className = 'option';
+      label.innerHTML = `<input type="radio" name="q${index}" value="${i}"> ${opt}`;
+      div.appendChild(label);
+    });
+    form.appendChild(div);
+  });
+
+  function calificar() {
+    let score = 0;
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '';
+
+    questions.forEach((item, index) => {
+      const selected = form.querySelector(`input[name="q${index}"]:checked`);
+      // Ajustar el índice porque añadimos títulos de sección al DOM
+      const questionDiv = form.querySelectorAll('.question')[index];
+      
+      const oldFeedback = questionDiv.querySelector('.feedback');
+      if (oldFeedback) oldFeedback.remove();
+
+      const feedback = document.createElement('div');
+      feedback.className = 'feedback';
+
+      if (selected) {
+        const val = parseInt(selected.value);
+        if (val === item.correct) {
+          score++;
+          feedback.textContent = '✅ Correcto';
+          feedback.classList.add('correct');
+        } else {
+          feedback.textContent = `❌ Incorrecto. La correcta es: ${item.options[item.correct]}`;
+          feedback.classList.add('incorrect');
+        }
+      } else {
+        feedback.textContent = `⚠️ No respondiste. La correcta es: ${item.options[item.correct]}`;
+        feedback.classList.add('incorrect');
+      }
+      questionDiv.appendChild(feedback);
+    });
+
+    resultDiv.innerHTML = `<h2>Puntuación Final: ${score} / ${questions.length}</h2>`;
+    if (score >= 50) {
+      resultDiv.innerHTML += `<p style="font-size:1rem; color:#28a745;">¡Excelente! Estás listo para el examen.</p>`;
+    } else if (score >= 35) {
+      resultDiv.innerHTML += `<p style="font-size:1rem; color:#e67e22;">Buen trabajo, pero repasa las que fallaste.</p>`;
+    } else {
+      resultDiv.innerHTML += `<p style="font-size:1rem; color:#dc3545;">Necesitas repasar más. ¡No te desanimes, tú puedes!</p>`;
+    }
+    resultDiv.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
